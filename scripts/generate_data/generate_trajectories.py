@@ -12,6 +12,7 @@ from mp_baselines.planners.gpmp2 import GPMP2
 from mp_baselines.planners.hybrid_planner import HybridPlanner
 from mp_baselines.planners.multi_sample_based_planner import MultiSampleBasedPlanner
 from mp_baselines.planners.rrt_connect import RRTConnect
+from mp_baselines.planners.rrt_star import RRTStar
 from torch_robotics import environments, robots
 from torch_robotics.tasks.tasks import PlanningTask
 from torch_robotics.visualizers.planning_visualizer import PlanningVisualizer
@@ -79,7 +80,7 @@ def generate_collision_free_trajectories(
         tensor_args=tensor_args,
     )
     sample_based_planner_base = RRTConnect(**rrt_connect_params)
-    # sample_based_planner_base = RRTStar(**rrt_connect_params)
+    #sample_based_planner_base = RRTStar(**rrt_connect_params)
     # sample_based_planner = sample_based_planner_base
     sample_based_planner = MultiSampleBasedPlanner(
         sample_based_planner_base,

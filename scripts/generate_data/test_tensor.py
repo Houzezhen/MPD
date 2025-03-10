@@ -19,5 +19,5 @@ def load_and_check(file_path):
         print("错误：文件路径无效")
     except Exception as e:
         print(f"数据加载异常：{str(e)}")
-for i in range(0,499):
-    load_and_check(f"/home/ylc/mpd-public/scripts/generate_data/logs/generate_trajectories_2025-03-07_18-28-43/env_id___EnvSpheres3D/robot_id___RobotPanda/{i}/trajs-collision.pt")
+for i in range(0,1):
+    load_and_check(f"/home/ylc/mpd-public/scripts/generate_data/logs/generate_trajectories_2025-03-10_22-09-56/env_id___EnvSpheres3DExtraObjects/robot_id___RobotPanda/0/trajs-free.pt")
