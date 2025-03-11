@@ -49,11 +49,11 @@ launcher = Launcher(
 # EXPERIMENT PARAMETERS SETUP
 
 dataset_subdir_l = [
-    'EnvSimple2D-RobotPointMass',
-    'EnvNarrowPassageDense2D-RobotPointMass',
-    'EnvDense2D-RobotPointMass',
-    'EnvSpheres3D-RobotPanda',
-
+    #'EnvSimple2D-RobotPointMass',
+    #'EnvNarrowPassageDense2D-RobotPointMass',
+    #'EnvDense2D-RobotPointMass',
+    #'EnvSpheres3D-RobotPanda',
+    'robot_id___RobotPanda'
 ]
 
 include_velocity_l = [

@@ -15,8 +15,8 @@ from torch_robotics.tasks.tasks import PlanningTask
 from torch_robotics.visualizers.planning_visualizer import PlanningVisualizer
 
 repo = git.Repo('.', search_parent_directories=True)
-dataset_base_dir = os.path.join(repo.working_dir, 'data_trajectories')
-
+#dataset_base_dir = os.path.join(repo.working_dir, 'data_trajectories')
+dataset_base_dir = '/home/ylc/mpd-public/scripts/generate_data/logs/generate_trajectories_2025-03-11_17-30-48/env_id___EnvSpheres3DExtraObjects'
 
 class TrajectoryDatasetBase(Dataset, abc.ABC):
 

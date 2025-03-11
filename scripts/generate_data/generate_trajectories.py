@@ -91,7 +91,7 @@ def generate_collision_free_trajectories(
 
     # Optimization-based planner
     gpmp_default_params_env = env.get_gpmp2_params(robot=robot)
-    gpmp_default_params_env['opt_iters'] = gpmp_opt_iters
+    #gpmp_default_params_env['opt_iters'] = gpmp_opt_iters
     gpmp_default_params_env['n_support_points'] = n_support_points
     gpmp_default_params_env['dt'] = duration / n_support_points
 

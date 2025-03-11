@@ -28,8 +28,8 @@ from torch_robotics.visualizers.planning_visualizer import PlanningVisualizer
 allow_ops_in_compiled_graph()
 
 
-TRAINED_MODELS_DIR = '../../data_trained_models/'
-
+#TRAINED_MODELS_DIR = '../../data_trained_models/'
+TRAINED_MODELS_DIR = '/home/ylc/mpd-public/scripts/train_diffusion/logs/train_diffusion_2025-03-11_18-50-56/dataset_subdir___robot_id___RobotPanda/include_velocity___True/use_ema___True/variance_schedule___exponential/n_diffusion_steps___25/predict_epsilon___True/unet_dim_mults_option___1'
 
 @single_experiment_yaml
 def experiment(
@@ -38,8 +38,8 @@ def experiment(
     # model_id: str = 'EnvDense2D-RobotPointMass',
     # model_id: str = 'EnvNarrowPassageDense2D-RobotPointMass',
     # model_id: str = 'EnvSimple2D-RobotPointMass',
-    model_id: str = 'EnvSpheres3D-RobotPanda',
-
+    #model_id: str = 'EnvSpheres3D-RobotPanda',
+    model_id: str = '0',
     # planner_alg: str = 'diffusion_prior',
     # planner_alg: str = 'diffusion_prior_then_guide',
     planner_alg: str = 'mpd',
@@ -106,7 +106,7 @@ def experiment(
     # Load dataset with env, robot, task
     train_subset, train_dataloader, val_subset, val_dataloader = get_dataset(
         dataset_class='TrajectoryDataset',
-        use_extra_objects=True,
+        use_extra_objects=False,
         obstacle_cutoff_margin=0.05,
         **args,
         tensor_args=tensor_args

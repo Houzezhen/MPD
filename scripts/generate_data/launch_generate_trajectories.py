@@ -13,7 +13,7 @@ from experiment_launcher.utils import is_local
 #env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvSimple2D', 'RobotPointMass', 500, 20, 1, 0.02
 # env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvNarrowPassageDense2D', 'RobotPointMass', 500, 20, 1, 0.02
 # env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvDense2D', 'RobotPointMass', 500, 20, 1, 0.02
-env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvSpheres3DExtraObjects', 'RobotPanda', 500, 20, 1.83, 0.05  # 1.83 = 7 * np.deg2rad(15)
+env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvSpheres3D', 'RobotPanda', 500, 20, 1.5, 0.05  # 1.83 = 7 * np.deg2rad(15)
 
 
 ########################################################################################################################
@@ -28,7 +28,7 @@ USE_CUDA = True
 
 N_SEEDS = num_contexts
 
-N_EXPS_IN_PARALLEL = 15 if not USE_CUDA else 1
+N_EXPS_IN_PARALLEL = 15 if not USE_CUDA else 25
 
 # N_CORES = N_EXPS_IN_PARALLEL
 N_CORES = 8
