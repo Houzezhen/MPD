@@ -1,3 +1,4 @@
+import math
 import os
 import pickle
 import time
@@ -57,7 +58,7 @@ def generate_collision_free_trajectories(
         start_state_pos = q_free[0]
         goal_state_pos = q_free[1]
 
-        if torch.linalg.norm(start_state_pos - goal_state_pos) > threshold_start_goal_pos:
+        if torch.linalg.norm(start_state_pos - goal_state_pos) > threshold_start_goal_pos and math.sqrt(pow(start_state_pos[-1]-goal_state_pos[-1],2)+pow(start_state_pos[-2]-goal_state_pos[-2],2))>3.:
             break
 
     if start_state_pos is None or goal_state_pos is None:
@@ -87,7 +88,7 @@ def generate_collision_free_trajectories(
         n_trajectories=n_trajectories,
         max_processes=-1,
         optimize_sequentially=True
-    )
+    )###RRT
 
     # Optimization-based planner
     gpmp_default_params_env = env.get_gpmp2_params(robot=robot)
@@ -106,7 +107,7 @@ def generate_collision_free_trajectories(
         tensor_args=tensor_args,
     )
     opt_based_planner = GPMP2(**planner_params)
-
+    ############高斯优化器
     ###############
     # Hybrid planner
     planner = HybridPlanner(
@@ -117,7 +118,7 @@ def generate_collision_free_trajectories(
 
     # Optimize
     trajs_iters = planner.optimize(debug=debug, print_times=True, return_iterations=True)
-    trajs_last_iter = trajs_iters[-1]
+    trajs_last_iter = trajs_iters[-1]#优化器迭代优化后取最后一条
 
     # -------------------------------- Save trajectories ---------------------------------
     print(f'----------------STATISTICS----------------')

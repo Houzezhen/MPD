@@ -1,3 +1,5 @@
+from mpmath.math2 import sqrt2
+
 from torch_robotics.isaac_gym_envs.motion_planning_envs import PandaMotionPlanningIsaacGymEnv, MotionPlanningController
 
 import os
@@ -17,7 +19,7 @@ from mpd.models.diffusion_models.guides import GuideManagerTrajectoriesWithVeloc
 from mpd.models.diffusion_models.sample_functions import guide_gradient_steps, ddpm_sample_fn
 from mpd.trainer import get_dataset, get_model
 from mpd.utils.loading import load_params_from_yaml
-from torch_robotics.robots import RobotPanda
+from torch_robotics.robots import RobotPanda, RobotUr10, RobotPandaCar
 from torch_robotics.torch_utils.seed import fix_random_seed
 from torch_robotics.torch_utils.torch_timer import TimerCUDA
 from torch_robotics.torch_utils.torch_utils import get_torch_device, freeze_torch_model_params
@@ -27,9 +29,9 @@ from torch_robotics.visualizers.planning_visualizer import PlanningVisualizer
 
 allow_ops_in_compiled_graph()
 
-
+import math
 #TRAINED_MODELS_DIR = '../../data_trained_models/'
-TRAINED_MODELS_DIR = '/home/ylc/mpd-public/scripts/train_diffusion/logs/train_diffusion_2025-03-11_18-50-56/dataset_subdir___robot_id___RobotPanda/include_velocity___True/use_ema___True/variance_schedule___exponential/n_diffusion_steps___25/predict_epsilon___True/unet_dim_mults_option___1'
+TRAINED_MODELS_DIR = '/home/ylc/mpd-public/scripts/train_diffusion/logs/train_diffusion_2025-04-03_21-03-01/dataset_subdir___robot_id___RobotPandaCar/include_velocity___True/use_ema___True/variance_schedule___exponential/n_diffusion_steps___25/predict_epsilon___True/unet_dim_mults_option___1'
 
 @single_experiment_yaml
 def experiment(
@@ -52,7 +54,7 @@ def experiment(
     n_guide_steps: int = 5,
     n_diffusion_steps_without_noise: int = 5,
 
-    weight_grad_cost_collision: float = 1e-2,
+    weight_grad_cost_collision: float = 1e-3,
     weight_grad_cost_smoothness: float = 1e-7,
 
     factor_num_interpolated_points_for_collision: float = 1.5,
@@ -60,7 +62,7 @@ def experiment(
     trajectory_duration: float = 5.0,  # currently fixed
 
     ########################################################################
-    device: str = 'cuda',
+    device: str = 'cuda:1',
 
     debug: bool = True,
 
@@ -78,7 +80,7 @@ def experiment(
     fix_random_seed(seed)
 
     device = get_torch_device(device)
-    tensor_args = {'device': device, 'dtype': torch.float32}
+    tensor_args = {'device': 'cuda:1', 'dtype': torch.float32}
 
     ########################################################################################################################
     print(f'##########################################################################################################')
@@ -158,11 +160,11 @@ def experiment(
     n_tries = 100
     start_state_pos, goal_state_pos = None, None
     for _ in range(n_tries):
-        q_free = task.random_coll_free_q(n_samples=2)
-        start_state_pos = q_free[0]
-        goal_state_pos = q_free[1]
+        q_free = task.random_coll_free_q(n_samples=10)
+        start_state_pos = q_free[3]
+        goal_state_pos = q_free[0]
 
-        if torch.linalg.norm(start_state_pos - goal_state_pos) > dataset.threshold_start_goal_pos:
+        if torch.linalg.norm(start_state_pos - goal_state_pos) > dataset.threshold_start_goal_pos and math.sqrt(pow(start_state_pos[-1]-goal_state_pos[-1],2)+pow(start_state_pos[-2]-goal_state_pos[-2],2))>3.:
             break
 
     if start_state_pos is None or goal_state_pos is None:
@@ -197,7 +199,7 @@ def experiment(
             CostCollision(
                 robot, n_support_points,
                 field=collision_field,
-                sigma_coll=1.0,
+                sigma_coll=0.4,
                 tensor_args=tensor_args
             )
         )
@@ -373,12 +375,12 @@ def experiment(
             anim_time=5
         )
 
-        if isinstance(robot, RobotPanda):
+        if isinstance(robot, (RobotPanda,RobotUr10,RobotPandaCar)):
             # visualize in Isaac Gym
             # POSITION CONTROL
             # add initial positions for better visualization
-            n_first_steps = 10
-            n_last_steps = 10
+            n_first_steps = 5
+            n_last_steps = 5
 
             trajs_pos = robot.get_position(trajs_final_free).movedim(1, 0)
             trajs_vel = robot.get_velocity(trajs_final_free).movedim(1, 0)
@@ -397,9 +399,13 @@ def experiment(
                 show_collision_spheres=False,
                 dt=dt,
                 **results_data_dict,
+                start_states_joint_pos = trajs_pos[0],
+                goal_state_joint_pos = trajs_pos[-1][0]
+
                 # show_collision_spheres=True
             )
-
+            #print(trajs_pos[0])
+            #print(trajs_pos[0].shape)
             motion_planning_controller = MotionPlanningController(motion_planning_isaac_env)
             motion_planning_controller.run_trajectories(
                 trajs_pos,

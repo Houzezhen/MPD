@@ -16,7 +16,7 @@ from torch_robotics.visualizers.planning_visualizer import PlanningVisualizer
 
 repo = git.Repo('.', search_parent_directories=True)
 #dataset_base_dir = os.path.join(repo.working_dir, 'data_trajectories')
-dataset_base_dir = '/home/ylc/mpd-public/scripts/generate_data/logs/generate_trajectories_2025-03-11_17-30-48/env_id___EnvSpheres3DExtraObjects'
+dataset_base_dir = '/home/ylc/mpd-public/scripts/generate_data/logs/generate_trajectories_2025-04-04_23-03-48/env_id___EnvSpheres3D'
 
 class TrajectoryDatasetBase(Dataset, abc.ABC):
 
@@ -34,8 +34,8 @@ class TrajectoryDatasetBase(Dataset, abc.ABC):
         self.dataset_subdir = dataset_subdir
         self.base_dir = os.path.join(dataset_base_dir, self.dataset_subdir)
 
-        self.args = load_params_from_yaml(os.path.join(self.base_dir, '0', 'args.yaml'))
-        self.metadata = load_params_from_yaml(os.path.join(self.base_dir, '0', 'metadata.yaml'))
+        self.args = load_params_from_yaml(os.path.join(self.base_dir, '1', 'args.yaml'))
+        self.metadata = load_params_from_yaml(os.path.join(self.base_dir, '1', 'metadata.yaml'))
 
         if obstacle_cutoff_margin is not None:
             self.args['obstacle_cutoff_margin'] = obstacle_cutoff_margin

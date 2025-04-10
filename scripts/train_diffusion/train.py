@@ -28,7 +28,7 @@ def experiment(
     predict_epsilon: bool = True,
 
     # Unet
-    unet_input_dim: int = 32,
+    unet_input_dim: int = 64,
     unet_dim_mults_option: int = 1,
 
     ########################################################################

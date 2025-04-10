@@ -13,7 +13,9 @@ from mpd.models.layers.layers_attention import SpatialTransformer
 
 UNET_DIM_MULTS = {
     0: (1, 2, 4),
-    1: (1, 2, 4, 8)
+    1: (1, 2, 4, 8),
+    2: (1, 2, 4, 8, 16)
+    #添加深度网络S
 }
 
 

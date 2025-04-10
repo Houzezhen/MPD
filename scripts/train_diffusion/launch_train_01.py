@@ -53,7 +53,9 @@ dataset_subdir_l = [
     #'EnvNarrowPassageDense2D-RobotPointMass',
     #'EnvDense2D-RobotPointMass',
     #'EnvSpheres3D-RobotPanda',
-    'robot_id___RobotPanda'
+    #'robot_id___RobotPanda'###机器人名称
+    #'robot_id___RobotUr10'
+    'robot_id___RobotPandaCar'###机器人名称
 ]
 
 include_velocity_l = [
@@ -76,15 +78,15 @@ predict_epsilon_l = [
     True
 ]
 
-dim = 32
+dim = 64
 
 unet_dim_mults_option_l = [
-    0,
-    1
+    1,
+    2
 ]
 
 
-batch_size = 128
+batch_size = 64
 lr = 3e-4
 
 
@@ -122,9 +124,6 @@ for dataset_subdir, include_velocity, use_ema, variance_schedule, n_diffusion_st
 
         debug=False,
     )
-
+#在trajectories  修改训练数据集
 launcher.run(LOCAL, TEST)
-
-
-
 

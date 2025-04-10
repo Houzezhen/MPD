@@ -198,6 +198,12 @@ def train(model=None, train_dataloader=None, epochs=None, lr=None, steps_til_sum
                     print(f"t_training_loss: {t_training_loss.elapsed:.4f} sec")
                     print(f"Total training loss {train_loss_batch:.4f}")
                     print(f"Training losses {train_losses}")
+                    if train_loss_batch<0.5and train_loss_batch>0.2:
+                        lr=2e-4
+                    elif train_loss_batch<=0.18:
+                        lr=1e-4
+                    #加入学习率变化
+                    optimizers = [torch.optim.Adam(lr=lr, params=model.parameters())]
 
                     train_losses_l.append((train_steps_current, train_losses_log))
 

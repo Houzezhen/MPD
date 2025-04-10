@@ -13,9 +13,9 @@ from experiment_launcher.utils import is_local
 #env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvSimple2D', 'RobotPointMass', 500, 20, 1, 0.02
 # env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvNarrowPassageDense2D', 'RobotPointMass', 500, 20, 1, 0.02
 # env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvDense2D', 'RobotPointMass', 500, 20, 1, 0.02
-env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvSpheres3D', 'RobotPanda', 500, 20, 1.5, 0.05  # 1.83 = 7 * np.deg2rad(15)
-
-
+#env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvSpheres3D', 'RobotPanda', 500, 20, 1.5, 0.05  # 1.83 = 7 * np.deg2rad(15)
+#env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvSpheres3D', 'RobotUr10', 500, 20, 1.5, 0.05  # 1.83 = 7 * np.deg2rad(15)
+env_id, robot_id, num_contexts, num_trajectories_per_context, threshold_start_goal_pos, obstacle_cutoff_margin = 'EnvSpheres3D', 'RobotPandaCar', 500, 20, 4.3, 0.05  # 1.83 = 7 * np.deg2rad(15)
 ########################################################################################################################
 # LAUNCHER
 
@@ -28,7 +28,7 @@ USE_CUDA = True
 
 N_SEEDS = num_contexts
 
-N_EXPS_IN_PARALLEL = 15 if not USE_CUDA else 25
+N_EXPS_IN_PARALLEL = 15 if not USE_CUDA else 25         #并行运行
 
 # N_CORES = N_EXPS_IN_PARALLEL
 N_CORES = 8
@@ -41,10 +41,11 @@ CONDA_ENV = 'mpd-public'
 exp_name = f'generate_trajectories'
 
 os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
-
+###保存数据在launcher里面
+#_generate_exp_params函数设置result_dir
 launcher = Launcher(
-    exp_name=exp_name,
-    exp_file='generate_trajectories',
+    exp_name=exp_name,#保存文件夹前缀
+    exp_file='generate_trajectories',#调用文件包
     # project_name='project01234',
     n_seeds=N_SEEDS,
     n_exps_in_parallel=N_EXPS_IN_PARALLEL,
@@ -77,5 +78,5 @@ launcher.add_experiment(
 
     debug=False
 )
-###111111
+
 launcher.run(LOCAL, TEST)
